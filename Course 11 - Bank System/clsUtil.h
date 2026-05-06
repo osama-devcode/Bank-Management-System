@@ -222,5 +222,56 @@ class clsUtil
 		return Text;
 
 	}
+
+	static string NumberToText(int Number)
+	{
+		if (Number == 0)
+		{
+			return "";
+		}
+
+		if (Number <= 19)
+		{
+			string arr[20] = { "","One","Two","Three","Four","Five","Six","Seven","Eight","Nine" ,"Ten","Eleven","Twelve","Thirteen","Fourteen","Fifteen","Sixteen","Seventeen","Eighteen","Nineteen" };
+
+			return arr[Number];
+		}
+		else if (Number <= 99)
+		{
+			string arr[10] = { "","","Twenty","Thirty","Forty","Fifty","Sixty","Seventy","Eighty","Ninety" };
+
+			string result = arr[Number / 10];
+
+			if (Number % 10 != 0)
+			{
+				result += " " + NumberToText(Number % 10);
+			}
+
+			return result;
+		}
+		else if (Number <= 999)
+		{
+			return NumberToText(Number / 100) + " Hundred " + NumberToText(Number % 100);
+		}
+		else if (Number <= 999999)
+		{
+			return NumberToText(Number / 1000) + " Thousand " + NumberToText(Number % 1000);
+		}
+		else if (Number <= 999999999)
+		{
+			return NumberToText(Number / 1000000) + " Million " + NumberToText(Number % 1000000);
+		}
+		else if (Number <= 19999999999)
+		{
+			return NumberToText(Number / 1000000000) + " Billion " + NumberToText(Number % 1000000000);
+		}
+		else
+		{
+			return NumberToText(Number / 100000000000) + " Billion " + NumberToText(Number % 100000000000);
+		}
+
+		return "";
+	}
+
 };
 
