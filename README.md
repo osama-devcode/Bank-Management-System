@@ -6,7 +6,7 @@ A C++ Console app that simulates a banking system.
 
 Features:
 
-Add new client, Update client, Delete Client, Find client
+Add new client, Update client, Delete Client, Find client, Show Clients List, Show Client Balances
 
 
 Technologies used:
