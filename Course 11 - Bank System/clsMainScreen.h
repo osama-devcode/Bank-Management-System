@@ -3,6 +3,7 @@
 #include <iomanip>
 #include "clsScreen.h"
 #include "clsInputValidate.h"
+#include "clsClientListScreen.h"
 using namespace std;
 
 class clsMainScreen : protected clsScreen
@@ -14,21 +15,21 @@ private:
 
 	static short _ReadMainMenueOption()
 	{
-		cout << setw(27) << left << "Choose what you want to do? [1 to 8]?";
+		cout << setw(37) << left << "" << "Choose what you want to do? [1 to 8]?";
 		short Choice = clsInputValidate::ReadShortNumberBetween(1, 8);
 		return Choice;
 	}
 
 	static void _GoBackToMainMenue()
 	{
-		cout << setw(27) << left << "Press any key to go back to the main menu...";
+		cout << setw(37) << left << "" << "Press any key to go back to the main menu...";
 		system ("pause>0");
 		ShowMainMenue();
 	}
 
 	static void _ShowAllClientsScreen()
 	{
-		cout << "Clients list screen will be here\n";
+		clsClientListScreen::ShowClientsList();
 	}
 	static void _ShowAddNewClientScreen()
 	{
@@ -150,18 +151,18 @@ private:
 		system("cls");
 		clsScreen::_DrawScreenHeader("\t\tMain Screen");
 
-		cout << "===========================================\n";
-		cout << "\t\tMain Menue\n";
-		cout << "===========================================\n";
-		cout << "\t[1] Show Client List.\n";
-		cout << "\t[2] Add New Client.\n";
-		cout << "\t[3] Delete Client.\n";
-		cout << "\t[4] Update Client Info.\n";
-		cout << "\t[5] Find Client.\n";
-		cout << "\t[6] Transactions.\n";
-		cout << "\t[7] Manage Users.\n";
-		cout << "\t[8] Logout.\n";
-		cout << "===========================================\n";
+		cout << setw(37) << left << "" << "===========================================\n";
+		cout << setw(37) << left << "" << "\t\t      Main Menue\n";
+		cout << setw(37) << left << "" << "===========================================\n";
+		cout << setw(37) << left << "" << "\t[1] Show Client List.\n";
+		cout << setw(37) << left << "" << "\t[2] Add New Client.\n";
+		cout << setw(37) << left << "" << "\t[3] Delete Client.\n";
+		cout << setw(37) << left << "" << "\t[4] Update Client Info.\n";
+		cout << setw(37) << left << "" << "\t[5] Find Client.\n";
+		cout << setw(37) << left << "" << "\t[6] Transactions.\n";
+		cout << setw(37) << left << "" << "\t[7] Manage Users.\n";
+		cout << setw(37) << left << "" << "\t[8] Logout.\n";
+		cout << setw(37) << left << "" << "===========================================\n";
 
 		_PerformMainMenueOption((_enMainMenueOptions)_ReadMainMenueOption());
 	}
