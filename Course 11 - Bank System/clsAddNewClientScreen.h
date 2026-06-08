@@ -8,7 +8,7 @@ using namespace std;
 class clsAddNewClientScreen : protected clsScreen
 {
 
-protected:
+private:
 
     static void _ReadClientInfo(clsBankClient& Client)
     {

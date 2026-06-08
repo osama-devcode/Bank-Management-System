@@ -5,6 +5,7 @@
 #include "clsInputValidate.h"
 #include "clsClientListScreen.h"
 #include "clsAddNewClientScreen.h"
+#include "clsDeleteClientScreen.h"
 using namespace std;
 
 class clsMainScreen : protected clsScreen
@@ -23,7 +24,7 @@ private:
 
 	static void _GoBackToMainMenue()
 	{
-		cout << setw(37) << left << "" << "Press any key to go back to the main menu...";
+		cout << endl << setw(37) << left << "" << "Press any key to go back to the main menu...";
 		system ("pause>0");
 		ShowMainMenue();
 	}
@@ -38,7 +39,7 @@ private:
 	}
 	static void _ShowDeleteClientScreen()
 	{
-		cout << "Delete Client screen will be here\n";
+		clsDeleteClientScreen::ShowDeleteClientScreen();
 	}
 	static void _ShowUpdateClientScreen()
 	{
