@@ -50,8 +50,6 @@ void ShowBalancesList()
 }
 
 
-
-
 int main()
 {
 
