@@ -1,75 +1,9 @@
 #include <iostream> 
-#include"clsBankClient.h" 
-#include"clsInputValidate.h"
-#include"clsUtil.h"
-#include <iomanip>
+#include "clsBankClient.h" 
 #include "clsMainScreen.h" 
+#include "clsUtil.h"
 using namespace std;
 
-void ReadClientInfo(clsBankClient &Client)
-{
-    cout << "\nEnter First Name: ";
-    Client.FirstName = clsInputValidate::ReadString();
-
-    cout << "\nEnter Last Name: ";
-    Client.LastName = clsInputValidate::ReadString();
-
-    cout << "\nEnter Email: ";
-    Client.Email = clsInputValidate::ReadString();
-
-    cout << "\nEnter Phone: ";
-    Client.Phone = clsInputValidate::ReadString();
-
-    cout << "\nEnter PinCode: ";
-    Client.PinCode = clsInputValidate::ReadString();
-
-    cout << "\nEnter AccountBalance: ";
-    Client.AccountBalance = clsInputValidate::ReadFloatNumber();
-
-
-}
-
-void UpdateClient()
-{
-    string AccountNumber = "";
-    cout << "Enter client Account Number: ";
-    AccountNumber = clsInputValidate::ReadString();
-
-    while (!clsBankClient::IsClientExist(AccountNumber))
-    {
-        cout << "Account Number is not fount, Please enter the right one: ";
-        AccountNumber = clsInputValidate::ReadString();
-    }
-
-    clsBankClient Client1 = clsBankClient::Find(AccountNumber);
-    Client1.Print();
-
-    cout << "\n\nUpdate Client Info::";
-    cout << "\n___________________\n";
-    ReadClientInfo(Client1);
-
-
-    clsBankClient::enSaveResults SaveResult;
-    SaveResult = Client1.Save();
-
-    switch (SaveResult)
-    {
-
-    case clsBankClient::enSaveResults::svFailedEmptyObject:
-        cout << "Error account was not saved because it was empty\n";
-
-        break;
-
-    case clsBankClient::enSaveResults::svSucceeded:
-        cout << "Account Updated Succesfuly :)\n";
-        Client1.Print();
-        break;
-
-    default:
-        break;
-    }
-
-}
 
 void PrintClientRecordBalanceLine(clsBankClient Client)
 {
