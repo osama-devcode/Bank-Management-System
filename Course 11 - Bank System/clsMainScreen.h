@@ -8,6 +8,7 @@
 #include "clsDeleteClientScreen.h"
 #include "clsUpdateClientScreen.h"
 #include "clsFindClientScreen.h"
+#include "clsTransactionsScreen.h"
 using namespace std;
 
 class clsMainScreen : protected clsScreen
@@ -22,13 +23,6 @@ private:
 		cout << setw(37) << left << "" << "Choose what you want to do? [1 to 8]?";
 		short Choice = clsInputValidate::ReadShortNumberBetween(1, 8);
 		return Choice;
-	}
-
-	static void _GoBackToMainMenue()
-	{
-		cout << endl << setw(37) << left << "" << "Press any key to go back to the main menu...";
-		system ("pause>0");
-		ShowMainMenue();
 	}
 
 	static void _ShowAllClientsScreen()
@@ -53,7 +47,7 @@ private:
 	}
 	static void _ShowTransactionsMenue()
 	{
-		cout << "Transactions menue will be here\n";
+		clsTransactionsScreen::ShowTransactionsMenueScreen();
 	}
 	static void _ShowManageUsersMenue()
 	{
@@ -63,6 +57,12 @@ private:
 	{
 		cout << "\nEnd Screen Will be here...\n";
 
+	}
+	static void _GoBackToMainMenue()
+	{
+		cout << endl << setw(37) << left << "" << "Press any key to go back to the main menu...";
+		system("pause>0");
+		ShowMainMenue();
 	}
 
 	static void _PerformMainMenueOption(_enMainMenueOptions MainMenueOption)
@@ -146,6 +146,9 @@ private:
 
 
 	}
+
+
+		
 
 
 	public:

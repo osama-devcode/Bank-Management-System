@@ -30,11 +30,11 @@ public:
 
 		if (!Client.IsEmpty())
 		{
-			cout << "Client Found :)\n\n";
+			cout << "\n\nClient Found :)\n\n";
 		}
 		else
 		{
-			cout << "Client was not found :(\n\n";
+			cout << "\n\nClient was not found :(\n\n";
 		}
 
 		Client.Print();
