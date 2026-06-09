@@ -304,7 +304,7 @@ public:
         return _LoadClientDataFromFile();
     }
 
-   static double GetTotalBalances()
+    static double GetTotalBalances()
     {
         vector <clsBankClient> vClients = GetClientsList();
 
@@ -316,5 +316,17 @@ public:
         }
 
         return TotalBalances;
+    }
+
+    void Deposit(double amount)
+    {
+        _AccountBalance += amount;
+        Save();
+    }
+
+    void Withdraw(double amount)
+    {
+        _AccountBalance -= amount;
+        Save();
     }
 };

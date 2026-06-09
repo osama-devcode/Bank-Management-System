@@ -129,10 +129,10 @@ public:
 		return clsDate::IsValidDate(Date);
 	}
 
-	static string ReadString()
+	static string ReadString(string message = "")
 	{
 		string  S1 = "";
-		// Usage of std::ws will extract allthe whitespace character
+		cout << message;
 		getline(cin >> ws, S1);
 		return S1;
 	}

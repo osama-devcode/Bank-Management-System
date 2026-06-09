@@ -2,8 +2,8 @@
 #include <iostream>
 #include "clsBankClient.h"
 #include "clsScreen.h"
-#include "clsMainScreen.h"
 #include "clsInputValidate.h"
+#include "clsDepositScreen.h"
 using namespace std;
 
 class clsTransactionsScreen : protected clsScreen
@@ -22,7 +22,7 @@ private:
 
 	static void _ShowDepositScreen()
 	{
-		cout << "\n\nDeposit Screen will be here...";
+		clsDepositScreen::ShowDepositScreen();
 	}
 	static void _ShowWhitdrawScreen()
 	{
@@ -34,7 +34,7 @@ private:
 	}
 	static void _GoBackToTransactionsMenue()
 	{
-		cout << "Press any key to go back to main menue...";
+		cout << "\n\nPress any key to go back to transactions menue...";
 		system("pause>0");
 		ShowTransactionsMenueScreen();
 	}
@@ -75,7 +75,7 @@ public:
 	static void ShowTransactionsMenueScreen()
 	{
 		system("cls");
-		clsScreen::_DrawScreenHeader("\t\tTransactions Screen");
+		clsScreen::_DrawScreenHeader("\t   Transactions Screen");
 
 		cout << setw(37) << left << "" << "===========================================\n";
 		cout << setw(37) << left << "" << "\t\t      Transactions Menue\n";
