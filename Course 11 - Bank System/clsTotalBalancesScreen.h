@@ -3,7 +3,6 @@
 #include "clsBankClient.h" 
 #include "clsScreen.h"
 #include "clsUtil.h" 
-
 using namespace std;
 
 class clsTotalBalancesScreen : protected clsScreen
@@ -16,7 +15,6 @@ private:
         cout << "| " << setw(20) << left << Client.FullName;
         cout << "| " << setw(12) << left << Client.AccountBalance;
     }
-
     static void _ShowBalancesList()
     {
         vector <clsBankClient> vClients = clsBankClient::GetClientsList();
@@ -59,10 +57,8 @@ public:
     static void ShowTotalBalancesScreen()
     {
         clsScreen::_DrawScreenHeader("\t Total Balances Screen");
-
         _ShowBalancesList();
-
-
     }
+
 };
 
