@@ -42,7 +42,7 @@ public:
 		{
 			Client.Deposit(Amount);
 			cout << "\nAmount deposit succefuly.";
-			cout << "\nNew amount is: " << Client.AccountBalance;
+			cout << "\nNew balance is: " << Client.AccountBalance;
 		}
 	}
 };

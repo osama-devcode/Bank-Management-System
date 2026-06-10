@@ -32,8 +32,8 @@ public:
 		Client.Print();
 
 		double Amount = 0;
-		cout << "\n\nEnter the amout you want to withdraw: ";
-		Amount = clsInputValidate::ReadDblNumberBetween(0,Client.AccountBalance,"amount is bigger than your balance, Enter aonther number: ");
+		cout << "\n\nEnter the amount you want to withdraw: ";
+		Amount = clsInputValidate::ReadDblNumberBetween(0,Client.AccountBalance,"Enter aonther number: ");
 
 		cout << "\nAre you sure you want to perform this transaction? [y/n]?";
 		char Answer = 'y';
@@ -42,12 +42,12 @@ public:
 		{
 			if(Client.Withdraw(Amount) == true)
 			{
-				cout << "\nAmount deposit succefuly.";
-				cout << "\nNew amount is: " << Client.AccountBalance;
+				cout << "\nAmount deposit successfully.";
+				cout << "\nNew balance is: " << Client.AccountBalance;
 			}
 			else
 			{
-				cout << "\nEror, Transaction was not made.";
+				cout << "\nError, Transaction was not made.";
 			}
 		}
 	}
