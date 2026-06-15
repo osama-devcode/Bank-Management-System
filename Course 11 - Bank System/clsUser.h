@@ -17,37 +17,7 @@ private:
 	_enMode _Mode;
 	string _UserName;
 	string _Password;
-	int _Permessions = 0;
-
-	//setters
-
-	void _setUserName(int UserName)
-	{
-		_UserName = UserName;
-	}
-	void _setPassword(int Password)
-	{
-		_Password = Password;
-	}
-	void _setPermessions(int Permessions)
-	{
-		_Permessions = Permessions;
-	}
-
-	//getters
-
-	string _getUserName()
-	{
-		return _UserName;
-	}
-	string _getPassword()
-	{
-		return _Password;
-	}
-	int _getPermessions()
-	{
-		return _Permessions;
-	}
+	int _Permissions = 0;
 
 	bool _MarkedForDelete = false;
 
@@ -59,70 +29,240 @@ private:
 
 		return User;
 	}
-
-	string _ConvertUserObjectToLine(clsUser User, string Seperator = "#//#")
+	static string _ConvertUserObjectToLine(clsUser User, string Seperator = "#//#")
 	{
 		string UserRecord = "";
-		UserRecord += User[0] + Seperator;
-		UserRecord += User[1] + Seperator;
-		UserRecord += User[2] + Seperator;
-		UserRecord += User[3] + Seperator;
-		UserRecord += User[4] + Seperator;
-		UserRecord += User[5] + Seperator;
+		UserRecord += User.FirstName + Seperator;
+		UserRecord += User.LastName + Seperator;
+		UserRecord += User.Email + Seperator;
+		UserRecord += User.Phone + Seperator;
+		UserRecord += User.UserName + Seperator;
+		UserRecord += User.Password + Seperator;
+		UserRecord += to_string(User.Permissions);
 
+		return UserRecord;
+	}
+	static vector <clsUser> _LoadUsersDataFromFile()
+	{
+		fstream MyFile;
+
+		vector <clsUser> vUsers;
+		MyFile.open("Users.txt", ios::in);
+
+		if (MyFile.is_open())
+		{
+			string Line;
+			while (getline(MyFile,Line))
+			{
+				vUsers.push_back(_ConvertLineToUserObject(Line));
+			}
+			MyFile.close();
+		}
+
+		return vUsers;
+	}
+	static void _SaveUsersDataToFile(vector <clsUser>& vUsers)
+	{
+		fstream MyFile;
+		MyFile.open("Users.txt", ios::out);
+
+		if (MyFile.is_open())
+		{
+			string DataLine;
+
+			for (clsUser& U : vUsers)
+			{
+				if (U.MarkedForDeleted() == false)
+				{
+					DataLine = _ConvertUserObjectToLine(U);
+					MyFile << DataLine << endl;
+				}
+			}
+			
+			MyFile.close();
+		}
+	}
+	static void _AddDataLineToFile(string  DataLine)
+	{
+		fstream MyFile;
+		MyFile.open("Users.txt", ios::out | ios::app);
+
+		if (MyFile.is_open())
+		{
+			MyFile << DataLine << endl;
+			MyFile.close();
+		}
+	}
+	void _Update()
+	{
+		vector <clsUser> vUsers = _LoadUsersDataFromFile();
+
+		for (clsUser& C : vUsers)
+		{
+			if (C.UserName == this->UserName)
+			{
+				C = *this;
+				_SaveUsersDataToFile(vUsers);
+				return;
+			}
+		}
+	
+	}
+	void _AddNew()
+	{
+		_AddDataLineToFile(_ConvertUserObjectToLine(*this));
+	}
+	static clsUser _GetEmptyUserObject()
+	{
+		return clsUser(_enMode::eEmpty, "", "", "", "", "", "", 0);
 	}
 
 	
 public:
-
-	//decspecs
-	__declspec(property(get = _getUserName, put = _setUserName)) string UserName;
-	__declspec(property(get = _getPassword, put = _setPassword)) string Password;
-	__declspec(property(get = _getPermessions, put = _setPermessions)) int Permessions;
-
-
 	clsUser(_enMode Mode,string FirstName, string LastName, 
 		string Email, string Phone, string UserName, string Password, 
-		int Permessions)
+		int Permissions)
 		: clsPerson(FirstName, LastName, Email, Phone)
 	{
 		_Mode = Mode;
 		_UserName = UserName;
 		_Password = Password;
-		_Permessions = Permessions;
+		_Permissions = Permissions;
 	}
 
-	clsUser Find(string UserName)
+	bool IsEmpty()
+	{
+		return (_Mode == _enMode::eEmpty);
+	}
+	bool MarkedForDeleted()
+	{
+		return _MarkedForDelete;
+	}
+
+	//setters and getters
+	void _setUserName(string UserName)
+	{
+		_UserName = UserName;
+	}
+	void _setPassword(string Password)
+	{
+		_Password = Password;
+	}
+	void _setPermissions(int Permissions)
+	{
+		_Permissions = Permissions;
+	}
+	string _getUserName()
+	{
+		return _UserName;
+	}
+	string _getPassword()
+	{
+		return _Password;
+	}
+	int _getPermissions()
+	{
+		return _Permissions;
+	}
+
+	//decspecs
+	__declspec(property(get = _getUserName, put = _setUserName)) string UserName;
+	__declspec(property(get = _getPassword, put = _setPassword)) string Password;
+	__declspec(property(get = _getPermissions, put = _setPermissions)) int Permissions;
+
+	static clsUser Find(string UserName)
+	{
+		vector <clsUser> vUsers = _LoadUsersDataFromFile();
+
+		for (clsUser& C : vUsers)
+		{
+			if (C.UserName == UserName)
+			{
+				return C;
+			}
+		}
+
+		return _GetEmptyUserObject();
+	}
+	static clsUser Find(string UserName, string Password)
+	{
+		vector <clsUser> vUsers = _LoadUsersDataFromFile();
+
+		for (clsUser& C : vUsers)
+		{
+			if (C.UserName == UserName && C.Password == Password)
+			{
+				return C;
+			}
+		}
+
+		return _GetEmptyUserObject();
+	}
+
+
+	enum enSaveResults { svFaildEmptyObject = 0, svSucceeded = 1, svFaildUserExists = 2 };
+	enSaveResults Save()
 	{
 
+		if (this->_Mode == _enMode::eEmpty)
+		{
+			return enSaveResults::svFaildEmptyObject;
+		}
+		else
+		{
+			vector <clsUser> vUsers = _LoadUsersDataFromFile();
+
+			for (clsUser& C : vUsers)
+			{
+				if (C.UserName == this->UserName)
+				{
+					C = *this;
+					_SaveUsersDataToFile(vUsers);
+					return enSaveResults::svSucceeded;
+				}
+			}
+			return enSaveResults::svFaildUserExists;
+		}
 	}
 
-	clsUser Find(string UserName, string Password)
+	static bool IsUserExist(string UserName)
 	{
+		vector <clsUser> vUsers = _LoadUsersDataFromFile();
 
+		for (clsUser& C : vUsers)
+		{
+			if (C.UserName == UserName)
+			{
+				return true;
+			}
+		}
+		return false;
 	}
-
-
-	static void AddNewUser()
+	bool Delete()
 	{
+		vector <clsUser> vUsers = _LoadUsersDataFromFile();
 
+		for (clsUser& C : vUsers)
+		{
+			if (this->UserName == C.UserName)
+			{
+				C._MarkedForDelete = true;
+				_SaveUsersDataToFile(vUsers);
+				return true;
+			}
+		}
+
+
+		return false;
 	}
-
-	static void DeleteUser()
+	static clsUser GetAddNewUserObject(string UserName)
 	{
-
+		return clsUser(_enMode::eAddNew, "", "", "", "", UserName, "", 0);
 	}
-
-	bool IsUserExists(string UserName)
+	static vector <clsUser> GetUsersList()
 	{
-
+		return _LoadUsersDataFromFile();
 	}
 
-	void Save()
-	{
-
-	}
-
-	
 };
 
