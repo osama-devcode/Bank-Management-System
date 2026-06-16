@@ -339,7 +339,7 @@ public:
 
     }
 
-    static vector<string> Split(string Delim)
+    vector<string> Split(string Delim)
     {
         return Split(_Value, Delim);
     }

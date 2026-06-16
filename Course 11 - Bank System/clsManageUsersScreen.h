@@ -2,6 +2,7 @@
 #include <iostream>
 #include "clsBankClient.h"
 #include "clsScreen.h"
+#include "clsListUsersScreen.h"
 using namespace std;
 
 class clsManageUsersScreen : protected clsScreen
@@ -25,7 +26,7 @@ class clsManageUsersScreen : protected clsScreen
 
 	static void _ShowListUsersScreen()
 	{
-		cout << "List users screen";
+		clsListUsersScreen::ShowUsersScreen();
 	}
 	static void _ShowAddNewUserScreen()
 	{

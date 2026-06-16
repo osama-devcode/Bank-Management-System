@@ -117,7 +117,6 @@ private:
 		return clsUser(_enMode::eEmpty, "", "", "", "", "", "", 0);
 	}
 
-	
 public:
 	clsUser(_enMode Mode,string FirstName, string LastName, 
 		string Email, string Phone, string UserName, string Password, 
@@ -204,11 +203,38 @@ public:
 	enSaveResults Save()
 	{
 
-		if (this->_Mode == _enMode::eEmpty)
+		switch(_Mode)
+
 		{
+		case _enMode::eEmpty:
 			return enSaveResults::svFaildEmptyObject;
+			break;
+
+		case _enMode::eUpdate:
+
+			_Update();
+			return enSaveResults::svSucceeded;
+			break;
+
+		case _enMode::eAddNew:
+			if (IsUserExist(UserName) == true)
+			{
+				return enSaveResults::svFaildUserExists;
+			}
+			else
+			{
+				_AddNew();
+				this->_Mode = _enMode::eUpdate;
+				return enSaveResults::svSucceeded;
+
+			}
+			break;
+
+
+		default:
+			break;
 		}
-		else
+		
 		{
 			vector <clsUser> vUsers = _LoadUsersDataFromFile();
 
