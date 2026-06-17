@@ -6,6 +6,7 @@
 #include "clsAddNewUserScreen.h"
 #include "clsDeleteUserScreen.h"
 #include "clsUpdateUserScreen.h"
+#include "clsFindUserScreen.h"
 using namespace std;
 
 class clsManageUsersScreen : protected clsScreen
@@ -46,8 +47,7 @@ class clsManageUsersScreen : protected clsScreen
 	}
 	static void _ShowFindUserScreen()
 	{
-		cout << "find users screen";
-
+		clsFindUserScreen::ShowFindUserScreen();
 	}
 
 
@@ -114,6 +114,11 @@ public:
 
 	static void ShowManageUsersMenue()
 	{
+		if (!CheckAccessRights(clsUser::enPermissions::pManageUsers))
+		{
+			return;// this will exit the function and it will not continue 
+		}
+
 		system("cls");
 		clsScreen::_DrawScreenHeader("\tManage Users Screen");
 
