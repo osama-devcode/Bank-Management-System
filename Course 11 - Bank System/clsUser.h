@@ -129,6 +129,18 @@ public:
 		_Permissions = Permissions;
 	}
 
+	enum enPermissions
+	{
+		eAll = -1, 
+		pListClients = 1,
+		pAddNewClient = 2,
+		pDeleteClient = 4,
+		pUpdateClients = 8,
+		pFindClient = 16,
+		pTranactions = 32,
+		pManageUsers = 64,
+	};
+
 	bool IsEmpty()
 	{
 		return (_Mode == _enMode::eEmpty);
@@ -168,6 +180,21 @@ public:
 	__declspec(property(get = _getUserName, put = _setUserName)) string UserName;
 	__declspec(property(get = _getPassword, put = _setPassword)) string Password;
 	__declspec(property(get = _getPermissions, put = _setPermissions)) int Permissions;
+
+	void Print()
+	{
+		cout << "\nUser Card:";
+		cout << "\n___________________";
+		cout << "\nFirstName   : " << this->FirstName;
+		cout << "\nLastName    : " << this->LastName;
+		cout << "\nFull Name   : " << this->FullName;
+		cout << "\nEmail       : " << this->Email;
+		cout << "\nPhone       : " << this->Phone;
+		cout << "\nUser Name   : " << this->UserName;
+		cout << "\nPassword    : " << this->Password;
+		cout << "\nPermissions : " << this->Permissions;
+		cout << "\n___________________\n";
+	}
 
 	static clsUser Find(string UserName)
 	{

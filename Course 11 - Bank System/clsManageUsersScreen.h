@@ -3,6 +3,7 @@
 #include "clsBankClient.h"
 #include "clsScreen.h"
 #include "clsListUsersScreen.h"
+#include "clsAddNewUserScreen.h"
 using namespace std;
 
 class clsManageUsersScreen : protected clsScreen
@@ -12,6 +13,7 @@ class clsManageUsersScreen : protected clsScreen
 
 	static short _ReadManageUsersOption()
 	{
+		cout << setw(37) << left << "";
 		cout << "Choose what do you want to do? [1 to 6]? ";
 		short Choice = clsInputValidate::ReadShortNumberBetween(1, 6);
 		return Choice;
@@ -30,8 +32,7 @@ class clsManageUsersScreen : protected clsScreen
 	}
 	static void _ShowAddNewUserScreen()
 	{
-		cout << "add users screen";
-
+		clsAddNewUserScreen::ShowAddNewUserScreen();
 	}
 	static void _ShowDeleteUserScreen()
 	{
