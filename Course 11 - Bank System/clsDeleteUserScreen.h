@@ -15,13 +15,13 @@ public:
 	{
 		_DrawScreenHeader("\tDelete User Screen");
 
-		cout << "Enter Username\n";
+		cout << "Enter Username: ";
 		string UserName = clsInputValidate::ReadString();
 		char Answer;
 
 		while (clsUser::IsUserExist(UserName) == false)
 		{
-			cout << "User doesn't exist enter another username";
+			cout << "User doesn't exist enter another username: ";
 			UserName = clsInputValidate::ReadString();
 		}
 
@@ -29,18 +29,18 @@ public:
 
 		User.Print();
 
-		cout << "Are you sure you want to delete this user? y/n?";
+		cout << "\n\nAre you sure you want to delete this user? y/n? ";
 		cin >> Answer;
 
 		if (toupper(Answer) == 'Y')
 		{
 			if (User.Delete())
 			{
-				cout << "\nUser Deleted Successfully\n";
+				cout << "User Deleted Successfully\n";
 			}
 			else
 			{
-				cout << "\nError User wasn't deleted\n";
+				cout << "Error User wasn't deleted\n";
 			}
 		}		
 
