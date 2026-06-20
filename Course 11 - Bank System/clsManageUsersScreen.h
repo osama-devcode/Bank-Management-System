@@ -18,7 +18,7 @@ class clsManageUsersScreen : protected clsScreen
 	{
 		cout << setw(37) << left << "";
 		cout << "Choose what do you want to do? [1 to 6]? ";
-		short Choice = clsInputValidate::ReadShortNumberBetween(1, 6);
+		short Choice = clsInputValidate::ReadNumberBetween(1, 6);
 		return Choice;
 	}
 
