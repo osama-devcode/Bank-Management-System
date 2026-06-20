@@ -1,21 +1,29 @@
-Bank Management System
+#Bank Management System
 
+##Overview
+The Bank Management System is a robust, console-based C++ application designed to simulate basic banking operations. It features a secure login system and provides functionalities to manage bank clients, perform transactions, and handle account details efficiently.
 
-A C++ Console app that simulates a banking system. 
+##Features
+- Secure Access: Interactive user login screen (`clsLoginScreen`) to ensure only authorized personnel can access the system.
+- Client Management: Add, update, delete, and search for client records.
+- Transactions: Seamlessly handle deposits, withdrawals, and balance inquiries.
+- User Management: Manage different system users with varying levels of access and permissions.
+- Clean Architecture: Built using Object-Oriented Programming (OOP) concepts in C++ to keep the codebase modular, maintainable, and scalable.
 
+ ##Technologies Used
+- Programming Language: C++
+- Architecture: Object-Oriented Design (Classes, Inheritance, Encapsulation)
+- Data Persistence: File I/O for persistent storage
+- IDE: Microsoft Visual Studio
 
-Features:
+##Getting Started
 
-Add new client, Update client, Delete Client, Find client, Show Clients List, Show Client Balances
+ Prerequisites
+- [Visual Studio](https://visualstudio.microsoft.com/) (with Desktop development with C++ workload installed) or any standard C++ compiler.
 
-
-Technologies used:
-
-Languages: C++
-
-Consepts: OOP
-
-IDE: Visual Studio 2026
-
-
+ Installation & Execution
+1. Clone the repository
+2. Open the solution file in Visual Studio.
+3. Build the solution (`Ctrl + Shift + B`).
+4. Run the application (`F5` or `Ctrl + F5`).
 
