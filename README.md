@@ -26,4 +26,7 @@ The Bank Management System is a robust, console-based C++ application designed t
 2. Open the solution file in Visual Studio.
 3. Build the solution (`Ctrl + Shift + B`).
 4. Run the application (`F5` or `Ctrl + F5`).
+5. Login: Once the application launches, use the following demo credentials to access the system:
+   Username: `admin`
+   Password: `1234`
 
