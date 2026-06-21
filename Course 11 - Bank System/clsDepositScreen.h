@@ -33,7 +33,7 @@ public:
 
 		double Amount = 0;
 		cout << "\n\nEnter the amout you want to deposit: ";
-		Amount = clsInputValidate::ReadNumber();
+		Amount = clsInputValidate::ReadNumber <double> ();
 
 		cout << "\nAre you sure you want to perform this transaction? [y/n]?";
 		char Answer = 'y';

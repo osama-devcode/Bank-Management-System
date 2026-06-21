@@ -28,12 +28,12 @@ public:
 	}
 	template <typename T> static T ReadNumberBetween(T From, T To, string ErrorMessage = "Number is not within range, Enter again:\n")
 	{
-		T Number = ReadNumber();
+		T Number =  ReadNumber <T> ()  ;
 
-		while (!IsNumberBetween(Number, From, To))
+		while (!IsNumberBetween <T> (Number, From, To))
 		{
 			cout << ErrorMessage;
-			Number = ReadNumber();
+			Number = ReadNumber <T> ();
 		}
 		return Number;
 	}

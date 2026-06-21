@@ -3,7 +3,6 @@
 #include<iostream>
 #include<string>
 #include "clsString.h"
-
 using namespace std;
 
 class clsDate
@@ -14,9 +13,12 @@ private:
 	short _Day = 1;
 	short _Month = 1;
 	short _Year = 1900;
-
+	short _Hour = 0;
+	short _Minute = 0;
+	short _Seconds = 0;
 public:
 
+	//constructors
 	clsDate()
 	{
 		time_t t = time(0);
@@ -25,7 +27,6 @@ public:
 		_Month = now->tm_mon + 1;
 		_Year = now->tm_year + 1900;
 	}
-
 	clsDate(string sDate)
 	{
 
@@ -37,7 +38,6 @@ public:
 		_Year = stoi(vDate[2]);
 
 	}
-
 	clsDate(short Day, short Month, short Year)
 	{
 
@@ -46,7 +46,6 @@ public:
 		_Year = Year;
 
 	}
-
 	clsDate(short DateOrderInYear, short Year)
 	{
 		//This will construct a date by date order in year
@@ -59,7 +58,6 @@ public:
 	void SetDay(short Day) {
 		_Day = Day;
 	}
-
 	short GetDay() {
 		return _Day;
 	}
@@ -68,7 +66,6 @@ public:
 	void SetMonth(short Month) {
 		_Month = Month;
 	}
-
 	short GetMonth() {
 		return _Month;
 	}
@@ -78,11 +75,9 @@ public:
 	void SetYear(short Year) {
 		_Year = Year;
 	}
-
 	short GetYear() {
 		return _Year;
 	}
-
 	__declspec(property(get = GetYear, put = SetYear)) short Year;
 
 	void Print()
@@ -103,6 +98,27 @@ public:
 		Day = now->tm_mday;
 
 		return clsDate(Day, Month, Year);
+	}
+	static string GetSystemDateTimeString()
+	{
+		//system datetime string 
+		time_t t = time(0);
+		tm* now = localtime(&t);
+
+		short Day, Month, Year, Hour, Minute, Second;
+
+		Year = now->tm_year + 1900;
+		Month = now->tm_mon + 1;
+		Day = now->tm_mday;
+		Hour = now->tm_hour;
+		Minute = now->tm_min;
+		Second = now->tm_sec;
+
+		return (to_string(Day) + "/" + to_string(Month) + "/"
+			+ to_string(Year) + " - "
+			+ to_string(Hour) + ":" + to_string(Minute)
+			+ ":" + to_string(Second));
+
 	}
 
 	static	bool IsValidDate(clsDate Date)
@@ -170,7 +186,6 @@ public:
 	{
 		return  isLeapYear(Year) ? 365 : 364;
 	}
-
 	short NumberOfDaysInAYear()
 	{
 		return  NumberOfDaysInAYear(_Year);
@@ -180,7 +195,6 @@ public:
 	{
 		return  NumberOfDaysInAYear(Year) * 24;
 	}
-
 	short NumberOfHoursInAYear()
 	{
 		return  NumberOfHoursInAYear(_Year);
@@ -1126,7 +1140,16 @@ public:
 		return CompareDates(*this, Date2);
 	}
 
+	static string _LocalTime()
+	{
+		time_t now = time(nullptr);
 
+		tm* local_time = localtime(&now);
 
+		char time_string[50];
+
+		strftime(time_string, sizeof(time_string), "%H:%M:%S", local_time);
+
+		return time_string;
+	}
 };
-

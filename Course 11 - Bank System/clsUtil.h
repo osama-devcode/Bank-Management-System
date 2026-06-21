@@ -59,7 +59,7 @@ class clsUtil
 			return char(RandomNumber(48, 57));
 			break;
 		}
-	defualt:
+		default:
 		{
 			return char(RandomNumber(65, 90));
 			break;
@@ -223,7 +223,7 @@ class clsUtil
 
 	}
 
-	static string NumberToText(int Number)
+	static string NumberToText(long long Number)
 	{
 		if (Number == 0)
 		{

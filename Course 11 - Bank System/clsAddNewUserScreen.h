@@ -46,7 +46,7 @@ private:
 		{
 			return -1;
 		}
-		
+
 		cout << "\nDo you want to give access to : \n ";
 
 		cout << "\nShow Clients List? y/n? ";
@@ -97,7 +97,14 @@ private:
 		{
 			Permissions += clsUser::enPermissions::pManageUsers;
 		}
-		
+
+		cout << "\nShow Login Register? y/n? ";
+		cin >> Answer;
+		if (toupper(Answer) == 'Y')
+		{
+			Permissions += clsUser::enPermissions::pLoginRegister;
+		}
+
 		return Permissions;
 	}
 

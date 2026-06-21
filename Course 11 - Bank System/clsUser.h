@@ -5,10 +5,23 @@
 #include <fstream>
 #include "clsString.h"
 #include <string>
+#include "clsDate.h"
 using namespace std;
 
 class clsUser : public clsPerson
 {
+public:
+	struct stLoginRegisterRecord
+	{
+		string DateTime;
+		string UserName;
+		string Password;
+		int Permissions;
+
+		// Constructor added to fix C26495 uninitialized member warning
+		stLoginRegisterRecord() : DateTime(""), UserName(""), Password(""), Permissions(0) {}
+	};
+
 private:
 
 	enum _enMode { eEmpty = 1, eUpdate = 2, eAddNew = 3 };
@@ -117,6 +130,30 @@ private:
 		return clsUser(_enMode::eEmpty, "", "", "", "", "", "", 0);
 	}
 
+	string _PrepareLogInRecord(string delimiter = "#//#")
+	{
+		string stLineRecord = "";
+
+		stLineRecord += clsDate::GetSystemDateTimeString() + delimiter;
+		stLineRecord += UserName + delimiter;
+		stLineRecord += Password + delimiter;
+		stLineRecord += to_string(Permissions);
+
+		return stLineRecord;
+	}
+	static stLoginRegisterRecord ConvertLoginRecordToStruct(string LineRecord)
+	{
+		vector <string> vRecord = clsString::Split(LineRecord,"#//#");
+
+		stLoginRegisterRecord stRecord;
+		stRecord.DateTime = vRecord[0];
+		stRecord.UserName = vRecord[1];
+		stRecord.Password = vRecord[2];
+		stRecord.Permissions = stoi(vRecord[3]);
+
+		return stRecord;
+	}
+
 public:
 	clsUser(_enMode Mode,string FirstName, string LastName, 
 		string Email, string Phone, string UserName, string Password, 
@@ -128,7 +165,7 @@ public:
 		_Password = Password;
 		_Permissions = Permissions;
 	}
-
+	
 	enum enPermissions
 	{
 		eAll = -1, 
@@ -139,6 +176,7 @@ public:
 		pFindClient = 16,
 		pTranactions = 32,
 		pManageUsers = 64,
+		pLoginRegister = 128
 	};
 
 	bool IsEmpty()
@@ -326,6 +364,40 @@ public:
 			return true;
 		else
 			return false;
+	}
+	void RegisterLogin()
+	{
+		fstream MyFile;
+
+		MyFile.open("Logins Log.txt", ios::out | ios::app);
+
+		if (MyFile.is_open())
+		{
+			string stLoginLine = _PrepareLogInRecord();
+			MyFile << stLoginLine << endl;
+			MyFile.close();
+		}
+
+	}
+	static vector <stLoginRegisterRecord> LoadLoginRecordsList()
+	{
+		fstream MyFile;
+		MyFile.open("Logins Log.txt", ios::in);
+
+		vector <stLoginRegisterRecord> vLogin;
+
+		if (MyFile.is_open())
+		{
+			string LineRecord;
+			while (getline(MyFile, LineRecord))
+			{
+				vLogin.push_back(ConvertLoginRecordToStruct(LineRecord));
+			}
+
+			MyFile.close();
+		}
+
+		return vLogin;
 	}
 
 };

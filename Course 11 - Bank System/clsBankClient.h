@@ -16,7 +16,7 @@ private:
     enMode _Mode;
     string _AccountNumber;
     string _PinCode;
-    float _AccountBalance;
+    double _AccountBalance;
     bool _MarkedForDelete = false;
 
     //other functions 
@@ -27,7 +27,7 @@ private:
         vClientData = clsString::Split(Line, Seperator);
 
         return clsBankClient(enMode::UpdateMode, vClientData[0], vClientData[1],
-            vClientData[2], vClientData[3], vClientData[4], vClientData[5], stod(vClientData[6]));
+            vClientData[2], vClientData[3], vClientData[4], vClientData[5], (double)stod(vClientData[6]));
     }
 
     static string _ConvertClientObjecttoLine(clsBankClient Client, string Seperator = "#//#") 
@@ -133,7 +133,7 @@ public:
 
     //constructors 
     clsBankClient(enMode Mode, string FirstName, string LastName, string Email, string Phone
-        , string AccountNumber, string PinCode, float AccountBalance)
+        , string AccountNumber, string PinCode, double AccountBalance)
         :clsPerson(FirstName, LastName, Email, Phone) {
 
         this->_Mode = Mode;
@@ -152,13 +152,13 @@ public:
     enMode get_Mode() { return this->_Mode; }
     string get_AccountNumber() { return this->_AccountNumber; }
     string get_PinCode() { return this->_PinCode; }
-    float get_AccountBalance() { return this->_AccountBalance; }
+    double get_AccountBalance() { return this->_AccountBalance; }
 
     //declspec 
     __declspec(property(get = get_Mode, put = set_Mode))enMode Mode;
     __declspec(property(get = get_AccountNumber, put = set_AccountNumber))string AccountNumber;
     __declspec(property(get = get_PinCode, put = set_PinCode))string PinCode;
-    __declspec(property(get = get_AccountBalance, put = set_AccountBalance))float AccountBalance;
+    __declspec(property(get = get_AccountBalance, put = set_AccountBalance))double AccountBalance;
 
     //client functions 
     bool IsEmpty() { return (_Mode == enMode::EmptyMode); }
@@ -198,8 +198,9 @@ public:
                 }
 
             }
-            return _GetEmptyClientObject();
         }
+
+        return _GetEmptyClientObject();
     }
 
     static clsBankClient Find(string AccountNumber, string PinCode) {
@@ -257,7 +258,7 @@ public:
             }
 
         default:
-
+            return enSaveResults::svFailedEmptyObject;
             break;
         }
     }

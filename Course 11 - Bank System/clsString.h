@@ -34,12 +34,12 @@ public:
 
     static short Length(string S1)
     {
-        return S1.length();
+        return (short)S1.length();
     };
 
     short Length()
     {
-        return _Value.length();
+        return (short)_Value.length();
     };
 
     static short CountWords(string S1)
@@ -51,7 +51,7 @@ public:
         string sWord; // define a string variable  
 
         // use find() function to get the position of the delimiters  
-        while ((pos = S1.find(delim)) != std::string::npos)
+        while ((pos = (short)S1.find(delim)) != std::string::npos)
         {
             sWord = S1.substr(0, pos); // store the word   
             if (sWord != "")
@@ -188,7 +188,7 @@ public:
 
         if (WhatToCount == enWhatToCount::All)
         {
-            return S1.length();
+            return (short)S1.length();
         }
 
         short Counter = 0;
@@ -319,7 +319,7 @@ public:
         string sWord; // define a string variable  
 
         // use find() function to get the position of the delimiters  
-        while ((pos = S1.find(Delim)) != std::string::npos)
+        while ((pos = (short)S1.find(Delim)) != std::string::npos)
         {
             sWord = S1.substr(0, pos); // store the word   
             if (sWord != "")
@@ -339,7 +339,7 @@ public:
 
     }
 
-    vector<string> Split(string Delim)
+    vector <string> Split(string Delim)
     {
         return Split(_Value, Delim);
     }
@@ -367,7 +367,7 @@ public:
     {
 
 
-        for (short i = S1.length() - 1; i >= 0; i--)
+        for (short i = (short)S1.length() - 1; i >= 0; i--)
         {
             if (S1[i] != ' ')
             {

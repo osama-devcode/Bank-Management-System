@@ -10,7 +10,6 @@ using namespace std;
 class clsLoginScreen : protected clsScreen
 {
 private:
-
 	static bool _Login()
 	{
 		bool LoginFailed = false;
@@ -46,6 +45,8 @@ private:
 			LoginFailed = CurrentUser.IsEmpty();
 		} while (LoginFailed);
 
+		//save the login data after here to make sure that the save is ouccured after the successfull login
+		CurrentUser.RegisterLogin();
 		clsMainScreen::ShowMainMenue();
 		return true;
 	}
