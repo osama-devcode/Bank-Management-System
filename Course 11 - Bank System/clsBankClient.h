@@ -5,10 +5,12 @@
 #include <vector> 
 #include <string> 
 #include <fstream> 
+#include "Global.h"
 using namespace std;
 
 class clsBankClient : public clsPerson
 {
+
 private:
     enum enMode { EmptyMode = 0, UpdateMode = 1, AddNewMode = 2 };
 
@@ -18,6 +20,17 @@ private:
     string _PinCode;
     double _AccountBalance;
     bool _MarkedForDelete = false;
+
+    struct stTransferLogRecord
+    {
+        string DateAndTime = "";
+        string SenderAccountNumber = "";
+        string ReceiverAccountNumber = "";
+        double Amount = 0;
+        double SenderNewBalance = 0;
+        double ReceiverNewBalance = 0;
+        string AdminUsername = "";
+    };
 
     //other functions 
     static clsBankClient _ConvertLineToClientObject(string Line, string Seperator = "#//#")
@@ -29,8 +42,7 @@ private:
         return clsBankClient(enMode::UpdateMode, vClientData[0], vClientData[1],
             vClientData[2], vClientData[3], vClientData[4], vClientData[5], (double)stod(vClientData[6]));
     }
-
-    static string _ConvertClientObjecttoLine(clsBankClient Client, string Seperator = "#//#") 
+    static string _ConvertClientObjectToLine(clsBankClient Client, string Seperator = "#//#") 
     {
         return Client.get_FirstName()
             + Seperator + Client.get_LastName()
@@ -40,12 +52,10 @@ private:
             + Seperator + Client._PinCode
             + Seperator + to_string(Client._AccountBalance);
     }
-
     static clsBankClient _GetEmptyClientObject()
     {
         return clsBankClient(enMode::EmptyMode, "", "", "", "", "", "", 0);
     }
-
     static vector<clsBankClient>_LoadClientDataFromFile()
     {
         vector <clsBankClient> vClients;
@@ -68,7 +78,6 @@ private:
 
         return vClients;
     }
-
     void _AddDataLineToFile(string stDataLine)
     {
         fstream MyFile;
@@ -81,7 +90,6 @@ private:
             MyFile.close();
         }
     }
-
     static void _SaveClientsDataToFile(vector<clsBankClient>& vClients) 
     {
         fstream MyFile;
@@ -96,7 +104,7 @@ private:
             {
                 if (C._MarkedForDelete == false)
                 {
-                    DataLine = _ConvertClientObjecttoLine(C);
+                    DataLine = _ConvertClientObjectToLine(C);
                     MyFile << DataLine << endl;
                 }
                 
@@ -106,7 +114,49 @@ private:
         }
 
     }
+   
+    string _PrepareTransferLogRecord(clsBankClient ReceiverClient, double Amount, string Seperator = "#//#")
+    {
+        string LineRecord = "";
+        LineRecord += clsDate::GetSystemDateTimeString() + Seperator;
+        LineRecord += AccountNumber + Seperator;
+        LineRecord += ReceiverClient.AccountNumber + Seperator;
+        LineRecord += to_string(Amount) + Seperator;
+        LineRecord += to_string(AccountBalance) + Seperator;
+        LineRecord += to_string(ReceiverClient.AccountBalance) + Seperator;
+        LineRecord += CurrentUser.UserName;
 
+        return LineRecord;
+    }
+    void _RegisterTransferLog(clsBankClient ReceiverClient, double Amount)
+    {
+        fstream MyFile;
+        MyFile.open("Transfer Log.txt", ios::out);
+        if (MyFile.is_open())
+        {
+            string LineLog = _PrepareTransferLogRecord(ReceiverClient, Amount);
+            MyFile << LineLog << endl;
+            MyFile.close();
+        }
+
+    }
+    static stTransferLogRecord _ConvertTransferLogLineToRecord(string Line, string Seperator = "#//#")
+    {
+        stTransferLogRecord TransferLogRecord;
+
+        vector <string> vTransferLogRecordLine = clsString::Split(Line, Seperator);
+        TransferLogRecord.DateAndTime = vTransferLogRecordLine[0];
+        TransferLogRecord.SenderAccountNumber = vTransferLogRecordLine[1];
+        TransferLogRecord.ReceiverAccountNumber = vTransferLogRecordLine[2];
+        TransferLogRecord.Amount = stod(vTransferLogRecordLine[3]);
+        TransferLogRecord.SenderNewBalance = stod(vTransferLogRecordLine[4]);
+        TransferLogRecord.ReceiverNewBalance = stod(vTransferLogRecordLine[5]);
+        TransferLogRecord.AdminUsername = vTransferLogRecordLine[6];
+
+        return TransferLogRecord;
+
+    }
+   
     void _Update()
     {
         vector <clsBankClient> vClients;
@@ -122,10 +172,9 @@ private:
 
         _SaveClientsDataToFile(vClients);
     }
-
     void _AddNew()
     {
-        _AddDataLineToFile(_ConvertClientObjecttoLine(*this));
+        _AddDataLineToFile(_ConvertClientObjectToLine(*this));
     }
 
 
@@ -202,7 +251,6 @@ public:
 
         return _GetEmptyClientObject();
     }
-
     static clsBankClient Find(string AccountNumber, string PinCode) {
 
         fstream MyFile;
@@ -228,7 +276,6 @@ public:
     }
 
     enum enSaveResults { svFailedEmptyObject = 0, svSucceeded = 1, svFailedAccountNmuberExist = 2 };
-
     enSaveResults Save()
     {
         switch (_Mode)
@@ -278,7 +325,6 @@ public:
     {
         return _MarkedForDelete;
     }
-
     bool Delete()
     {
         vector <clsBankClient> _vClients;
@@ -318,25 +364,36 @@ public:
 
         return TotalBalances;
     }
-
-    void Deposit(double amount)
+    void Deposit(double Amount)
     {
-        _AccountBalance += amount;
+        _AccountBalance += Amount;
         Save();
     }
-
-    bool Withdraw(double amount)
+    bool Withdraw(double Amount)
     {
-        if (amount > AccountBalance)
+        if (Amount > AccountBalance)
         {
             return false;
         }
         else
         {
-            _AccountBalance -= amount;
+            _AccountBalance -= Amount;
             Save();
             return true;
         }
         
     }
+    bool Transfer(double Amount, string AccountNumber)
+    {
+        if (this->Withdraw(Amount) == true)
+        {
+            clsBankClient Client = Find(AccountNumber);
+            Client.Deposit(Amount);
+            _RegisterTransferLog(Client, Amount);
+            return true;
+        }
+        return false;
+    }
+
+
 };
