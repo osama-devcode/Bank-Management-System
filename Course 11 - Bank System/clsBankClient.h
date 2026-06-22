@@ -10,6 +10,17 @@ using namespace std;
 
 class clsBankClient : public clsPerson
 {
+public:
+    struct stTransferLogRecord
+    {
+        string DateAndTime = "";
+        string SenderAccountNumber = "";
+        string ReceiverAccountNumber = "";
+        double Amount = 0;
+        double SenderNewBalance = 0;
+        double ReceiverNewBalance = 0;
+        string AdminUsername = "";
+    };
 
 private:
     enum enMode { EmptyMode = 0, UpdateMode = 1, AddNewMode = 2 };
@@ -21,16 +32,6 @@ private:
     double _AccountBalance;
     bool _MarkedForDelete = false;
 
-    struct stTransferLogRecord
-    {
-        string DateAndTime = "";
-        string SenderAccountNumber = "";
-        string ReceiverAccountNumber = "";
-        double Amount = 0;
-        double SenderNewBalance = 0;
-        double ReceiverNewBalance = 0;
-        string AdminUsername = "";
-    };
 
     //other functions 
     static clsBankClient _ConvertLineToClientObject(string Line, string Seperator = "#//#")
@@ -156,7 +157,7 @@ private:
         return TransferLogRecord;
 
     }
-   
+
     void _Update()
     {
         vector <clsBankClient> vClients;
@@ -395,5 +396,27 @@ public:
         return false;
     }
 
+    static vector <stTransferLogRecord> LoadTransferLog()
+    {
+        fstream MyFile;
+        MyFile.open("Transfer Log.txt", ios::in);
+        vector <stTransferLogRecord> vLogs;
+
+        if (MyFile.is_open())
+        {
+            stTransferLogRecord stTransferLog;
+            string LineLog = "";
+
+            while (getline(MyFile, LineLog))
+            {
+                stTransferLog = _ConvertTransferLogLineToRecord(LineLog);
+                vLogs.push_back(stTransferLog);
+            }
+
+            MyFile.close();
+        }
+
+        return vLogs;
+    }
 
 };
