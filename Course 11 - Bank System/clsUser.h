@@ -6,6 +6,7 @@
 #include "clsString.h"
 #include <string>
 #include "clsDate.h"
+#include "clsUtil.h"
 using namespace std;
 
 class clsUser : public clsPerson
@@ -38,7 +39,7 @@ private:
 	{
 		vector <string> vUser = clsString::Split(Line,Seperator);
 		clsUser User(_enMode::eUpdate, vUser[0], vUser[1], vUser[2], vUser[3],
-			vUser[4], vUser[5], stoi(vUser[6]));
+			vUser[4], clsUtil::DecryptText(vUser[5]), stoi(vUser[6]));
 
 		return User;
 	}
@@ -50,7 +51,7 @@ private:
 		UserRecord += User.Email + Seperator;
 		UserRecord += User.Phone + Seperator;
 		UserRecord += User.UserName + Seperator;
-		UserRecord += User.Password + Seperator;
+		UserRecord += clsUtil::EncryptText(User.Password) + Seperator;
 		UserRecord += to_string(User.Permissions);
 
 		return UserRecord;
@@ -136,19 +137,19 @@ private:
 
 		stLineRecord += clsDate::GetSystemDateTimeString() + delimiter;
 		stLineRecord += UserName + delimiter;
-		stLineRecord += Password + delimiter;
+		stLineRecord += clsUtil::EncryptText(Password) + delimiter;
 		stLineRecord += to_string(Permissions);
 
 		return stLineRecord;
 	}
-	static stLoginRegisterRecord ConvertLoginRecordToStruct(string LineRecord)
+	static stLoginRegisterRecord _ConvertLoginRecordToStruct(string LineRecord)
 	{
 		vector <string> vRecord = clsString::Split(LineRecord,"#//#");
 
 		stLoginRegisterRecord stRecord;
 		stRecord.DateTime = vRecord[0];
 		stRecord.UserName = vRecord[1];
-		stRecord.Password = vRecord[2];
+		stRecord.Password = clsUtil::DecryptText(vRecord[2]);
 		stRecord.Permissions = stoi(vRecord[3]);
 
 		return stRecord;
@@ -391,7 +392,7 @@ public:
 			string LineRecord;
 			while (getline(MyFile, LineRecord))
 			{
-				vLogin.push_back(ConvertLoginRecordToStruct(LineRecord));
+				vLogin.push_back(_ConvertLoginRecordToStruct(LineRecord));
 			}
 
 			MyFile.close();
