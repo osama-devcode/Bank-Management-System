@@ -1,5 +1,4 @@
 #include "clsLoginScreen.h"
-
 int main()
 {
     while (true)
@@ -7,7 +6,5 @@ int main()
        if(! clsLoginScreen::ShowLoginScreen())
            break;
     }
-    system("pause>0");
     return 0;
 }
-
